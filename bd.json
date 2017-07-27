@@ -1,0 +1,66 @@
+
+semestres :{
+	semestre_año : {
+		horarios :{
+			laboratorio :{
+				lunes : {
+					hora_no : {
+						clave_materia : "",
+						rfc : "",
+						grupo : int
+					},
+					...
+				},
+				...
+			},
+			...
+		},
+		
+		clases: {
+			id : {
+				UUID : {
+					hora : hora_no,
+					fecha : date(),
+					dia : dia,
+					rfc : rfc,
+					clave : clave,
+					datos :{
+						software : "",
+						tema : "",
+						practica : "",
+						canon : ""
+					}
+				},
+				...
+			}
+		},
+		prestamos : {
+			UUID : {
+				alumno : ncontrol_alumno,
+				maquina : numero_maquina,
+				entrada : hora() ,
+				salida : hora (),
+				faltante : ""
+			},
+			...
+		}
+	},
+	...
+}
+
+profesores : {
+	rfc : {
+		nombre : "",
+		titulo : ""
+	},
+	...
+}
+
+materias : {
+	clave_materia :{
+		nombre : "",
+		carrera : "",
+		semestre : int
+	},
+	...
+}
