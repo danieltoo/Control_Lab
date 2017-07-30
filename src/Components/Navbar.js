@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import firebase from '../firebase'
 import { NavLink } from 'react-router-dom'
 import logo from '../logo.svg'
-
+import toastr from 'toastr'
 
 export default class Navbar extends Component {
 	constructor(props) {
@@ -19,9 +19,8 @@ export default class Navbar extends Component {
 	      .catch(error => console.error(`Error : ${error.code}: ${error.message}`))
   	}
   	componentDidMount() {
-
+  		toastr["success"]("", "¡Bienvenido!<br/>")
   		let user = firebase.auth().currentUser
-  		console.log(user.uid)
   		let t = this
   		firebase.database().ref('/admin')
   			.once('value').then(function(snapshot) {

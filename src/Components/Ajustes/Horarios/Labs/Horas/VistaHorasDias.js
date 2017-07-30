@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import firebase from '../../../../../firebase'
+import toastr from 'toastr'
 import ModalAjusteDisponible from './ModalAjusteDisponible.js'
 import ModalAjusteActualizar from './ModalAjusteActualizar.js'
 
@@ -61,12 +62,26 @@ export default class VistaHorasDias extends Component {
 	handleDelete(){
 		firebase.database().ref("semestres/"+this.state.semestre+"/horario/"+this.props.lab+"/"+this.props.dia+"/"+this.props.hora)
 		.remove()
+		.then(() => {
+			toastr["success"]("Clase eliminada!")
+		})
+		.catch((e) => {
+			toastr["error"]("Ocurrió un error!")
+		})
 	}
 	handleSubmit (rfc, clave){
+		if (rfc==="" || clave==="") {
+			toastr["error"]("Campos vacios!")
+		}
 		firebase.database().ref("semestres/"+this.state.semestre+"/horario/"+this.props.lab+"/"+this.props.dia+"/"+this.props.hora)
 		.set({
 			docente : rfc,
 			materia : clave
+		}).then(() => {
+			toastr["success"]("Clase guardada!")
+		})
+		.catch((e) => {
+			toastr["error"]("Ocurrió un error!")
 		})
 	}
 	isMod () {

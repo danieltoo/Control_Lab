@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import firebase from '../../../firebase'
 import ReactDOM from 'react-dom'
-
+import toastr from 'toastr'
 import ItemMateria from './ItemMateria'
 
 export default class CambiosMateria extends Component {
@@ -53,6 +53,7 @@ export default class CambiosMateria extends Component {
 		ReactDOM.findDOMNode(this.refs.nombre).value === "" ||
 		ReactDOM.findDOMNode(this.refs.carrera).value === "0" ||
 		ReactDOM.findDOMNode(this.refs.semestre).value === "0") {
+			toastr["error"]("Campos vacios","Error")
 			return true 
 		}else {
 			return false
@@ -65,11 +66,15 @@ export default class CambiosMateria extends Component {
 		}
 		let clave = ReactDOM.findDOMNode(this.refs.clave).value
 		firebase.database().ref('materias/'+ clave).remove()
+		.then(() => {
+			toastr["success"]("Materia eliminada!")
+		}).catch((e) => {
+			toastr["error"]("Ocurrió un error!")
+		})
 		this.clearForm()
 	}
 	updateMat() {
 		if (this.validar()){
-			console.log("se encuentran vacios")
 			return 
 		}
 		let search = ReactDOM.findDOMNode(this.refs.search).value
@@ -78,7 +83,7 @@ export default class CambiosMateria extends Component {
 		let semestre= ReactDOM.findDOMNode(this.refs.semestre).value
 		let carrera= ReactDOM.findDOMNode(this.refs.carrera).value
 		if (search === "") {
-			console.log("Necesita un valor en busqueda")
+			toastr["info"]("Debe haber un valor en busqueda")
 			return 
 		}
 		firebase.database().ref('materias/'+ search).remove()
@@ -86,12 +91,16 @@ export default class CambiosMateria extends Component {
 		    nombre: nombre,
 		    semestre : semestre,
 		    carrera : carrera
-		});
+		})
+		.then(() => {
+			toastr["success"]("Materia actualizada!")
+		}).catch((e) => {
+			toastr["error"]("Ocurrió un error!")
+		})
 		this.clearForm()
 	}
 	addMat() {
 		if (this.validar()){
-			console.log("se encuentran vacios")
 			return 
 		}
 		let clave = ReactDOM.findDOMNode(this.refs.clave).value
@@ -103,7 +112,12 @@ export default class CambiosMateria extends Component {
 		    nombre: nombre,
 		    semestre : semestre,
 		    carrera : carrera
-		});
+		})
+		.then(() => {
+			toastr["success"]("Materia guardada!")
+		}).catch((e) => {
+			toastr["error"]("Ocurrió un error!")
+		})
 		this.clearForm()
 	}
 	clearForm(){
@@ -148,7 +162,7 @@ export default class CambiosMateria extends Component {
 					<div className="nav-wrapper card ">
 				      <form onSubmit={this.handleSearch}>
 				        <div className="input-field">
-				          <input ref="search" type="search" onChange={this.handleChange} required />
+				          <input ref="search" placeholder="Escribe algo para buscar" type="search" onChange={this.handleChange} required />
 				          <label className="label-icon" htmlFor="search"><i className="material-icons">search</i></label>
 				        </div>
 				      </form>

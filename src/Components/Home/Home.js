@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import { BrowserRouter as Router,Route , Switch, Redirect  } from 'react-router-dom'
+import { BrowserRouter as Router,Route , Switch, Redirect} from 'react-router-dom'
 import firebase from "../../firebase"
-import toastr from 'toastr'
+
 
 import Navbar from '../Navbar'
 import Side from '../Side'
@@ -9,6 +9,13 @@ import Side from '../Side'
 import Ajustes from '../Ajustes/Ajustes'
 import Horarios from '../Horarios/Horarios.js'
 import Dashboard from '../Dashboard/Dashboard.js'
+import Registros from '../Registros/Registros.js'
+
+
+
+
+
+
 
 export default class Home extends Component {
   constructor(props) {
@@ -46,13 +53,13 @@ export default class Home extends Component {
 			    	<Navbar user={this.state.user} />
 			    	{this.state.user ? this.userOn() : this.userOff()}
 			    	<main>
-              
 			    		<Redirect to="/dashboard"/>
 		    			<div>
 			    			<Switch>
 			    				<Route exact path="/dashboard" component={Dashboard}/>
 			    				<Route exact path="/horarios" component={Horarios}/>
 			    				<Route exact path="/ajustes" component={Ajustes}/>
+			    				<Route exact path="/registros" component={Registros}/>
 			    			</Switch>
 		    			</div>
 			    	</main>
@@ -63,12 +70,4 @@ export default class Home extends Component {
       )
   }
 }
-/*
-<a className="btn" onClick={() =>{ 
-                toastr.options = {
-                  "positionClass": "toast-top-right",
-                  "showDuration": "300",
-                  "hideDuration": "1000"
-                }
-               toastr.success('Cambio realizado')
-              }}>Hola</a>*/
+

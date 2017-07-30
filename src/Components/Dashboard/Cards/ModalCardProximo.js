@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import firebase from "../../../firebase"
 import {Modal, Autocomplete} from 'react-materialize'
-
+import toastr from 'toastr'
 export default class ModalCardProximo extends Component {
 	constructor(props) {
 		super(props);
@@ -40,13 +40,9 @@ export default class ModalCardProximo extends Component {
 		e.preventDefault()
 		let t = this
 		let d=new Date();
-		let dia = this.props.dias[d.getDay()]
 		let hora = this.props.convertH[d.getHours()]
-		console.log("semestres/"+t.props.semestre+"/clase/"+d.getMonth()+"/"+d.getDate()+"/"+hora)
-		firebase.database().ref("semestres/"+t.props.semestre+"/clase/"+d.getMonth()+"/"+d.getDate()+"/"+hora+"/"+t.props.lab)
+		firebase.database().ref("semestres/"+t.props.semestre+"/clase/"+t.props.meses[d.getMonth()]+"/"+d.getDate()+"/"+hora+"/"+t.props.lab)
 		.set({
-			fecha : d.getDate()+"/"+d.getMonth()+"/"+d.getFullYear(),
-			dia : dia,
 			rfc : t.state.rfc,
 			clave : t.state.clave,
 			datos : {
@@ -58,7 +54,11 @@ export default class ModalCardProximo extends Component {
 			tiempos: {
 				entrada : d.getHours() +":"+ d.getMinutes()
 			}
-			
+		}).then(() => {
+			toastr["success"]("Entrada guardada!")
+		})
+		.catch((e) => {
+			toastr["error"]("Ocurrió un error!")
 		})
 
 	}
@@ -107,8 +107,8 @@ export default class ModalCardProximo extends Component {
 			          <label htmlFor="textarea1">Practica</label>
 			        </div>
 			        <p className="col s2">
-				      <input type="checkbox" ref="canon1" id="inde" />
-				      <label htmlFor="inde">Requiere Cañón</label>
+				      <input type="checkbox" ref="canon1" id={this.props.lab} />
+				      <label htmlFor={this.props.lab}>Requiere Cañón</label>
 				    </p>
 
 					 <div className="offset-s8 col s3">

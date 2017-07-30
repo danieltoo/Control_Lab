@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import firebase from "../../../firebase"
 import {Modal, Autocomplete} from 'react-materialize'
+import toastr from 'toastr'
 
 export default class ModalCardDisponible extends Component {
 	constructor(props) {
@@ -38,13 +39,11 @@ export default class ModalCardDisponible extends Component {
 		e.preventDefault()
 		let t = this
 		let d=new Date();
-		let dia = this.props.dias[d.getDay()]
-		let hora = this.props.convertH[d.getHours()-2]
-		firebase.database().ref("semestres/"+t.props.semestre+"/clase/"+d.getMonth()+"/"+d.getDate()+"/"+hora+"/"+t.props.lab)
+		let hora = this.props.convertH[d.getHours()]
+		let da = d.getDate()
+
+		firebase.database().ref("semestres/"+t.props.semestre+"/clase/"+t.props.meses[d.getMonth()]+"/"+da+"/"+hora+"/"+t.props.lab)
 		.set({
-			hora: hora,
-			fecha : d.getDate()+"/"+d.getMonth()+"/"+d.getFullYear(),
-			dia : dia,
 			rfc : t.state.rfc,
 			clave : t.state.clave,
 			datos : {
@@ -56,6 +55,11 @@ export default class ModalCardDisponible extends Component {
 			tiempos: {
 				entrada : d.getHours() +":"+ d.getMinutes()
 			}
+		}).then(() => {
+			toastr["success"]("Entrada guardada!")
+		})
+		.catch((e) => {
+			toastr["error"]("Ocurrió un error!")
 		})
 
 	}
@@ -102,8 +106,8 @@ export default class ModalCardDisponible extends Component {
 			          <label htmlFor="textarea1">Practica</label>
 			        </div>
 			        <p className="col s2">
-				      <input type="checkbox" ref="canon" id="indeterminate-checkbox" />
-				      <label htmlFor="indeterminate-checkbox">Requiere Cañón</label>
+				      <input type="checkbox" ref="canon" id={this.props.lab} />
+				      <label htmlFor={this.props.lab}>Requiere Cañón</label>
 				    </p>
 					 <div className="offset-s8 col s3">
 			        	<button className="btn green modal-action modal-close" >

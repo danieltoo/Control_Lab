@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import firebase from '../../../firebase'
 import ReactDOM from 'react-dom'
 import ItemDocente from './ItemDocente'
+import toastr from 'toastr'
 
 export default class CambiosDocentes extends Component {
 	constructor(props) {
@@ -46,6 +47,7 @@ export default class CambiosDocentes extends Component {
 		if (ReactDOM.findDOMNode(this.refs.rfc).value === "" ||
 		ReactDOM.findDOMNode(this.refs.nombre).value === "" ||
 		ReactDOM.findDOMNode(this.refs.titulo).value === "0") {
+			toastr["error"]("Campos vacios","Error")
 			return true 
 		}else {
 			return false
@@ -53,16 +55,20 @@ export default class CambiosDocentes extends Component {
 	}
 	deleteDoc(){
 		if (this.validar()){
-			console.log("se encuentran vacios")
 			return 
 		}
 		let rfc = ReactDOM.findDOMNode(this.refs.rfc).value
 		firebase.database().ref('docentes/'+ rfc).remove()
+		.then(() => {
+			toastr["success"]("Docente eliminado!")
+		})
+		.catch((e) => {
+			toastr["error"]("Ocurrió un error!")
+		})
 		this.clearForm()
 	}
 	updateDoc () {
 		if (this.validar()){
-			console.log("se encuentran vacios")
 			return 
 		}
 		let search = ReactDOM.findDOMNode(this.refs.search).value
@@ -70,7 +76,7 @@ export default class CambiosDocentes extends Component {
 		let nombre=ReactDOM.findDOMNode(this.refs.nombre).value
 		let titulo= ReactDOM.findDOMNode(this.refs.titulo).value
 		if (search === "") {
-			console.log("Necesita un valor en busqueda")
+			toastr["info"]("Debe haber un valor en busqueda")
 			return 
 		}
 
@@ -78,24 +84,30 @@ export default class CambiosDocentes extends Component {
 		firebase.database().ref('docentes/' + rfc).set({
 		    nombre: nombre,
 		    titulo : titulo
-		});
+		})
+		.then(() => {
+			toastr["success"]("Docente actualizado!")
+		}).catch((e) => {
+			toastr["error"]("Ocurrió un error!")
+		})
 		this.clearForm()
 	}
 	addDoc () {
 		if (this.validar()){
-			console.log("se encuentran vacios")
 			return 
 		}
 		let rfc = ReactDOM.findDOMNode(this.refs.rfc).value
 		let nombre = ReactDOM.findDOMNode(this.refs.nombre).value
 		let titulo = ReactDOM.findDOMNode(this.refs.titulo).value
-		console.log(rfc)
-		console.log(nombre)
-		console.log(titulo)
 		firebase.database().ref('docentes/' + rfc).set({
 		    nombre: nombre,
 		    titulo : titulo
-		});
+		})
+		.then(() => {
+			toastr["success"]("Docente guardado!")
+		}).catch((e) => {
+			toastr["error"]("Ocurrió un error!")
+		})
 		this.clearForm()
 	}
 	clearForm(){
@@ -137,7 +149,7 @@ export default class CambiosDocentes extends Component {
 					<div className="nav-wrapper card ">
 				      <form onSubmit={this.handleSearch}>
 				        <div className="input-field">
-				          <input ref="search" type="search" onChange={this.handleChange} required />
+				          <input ref="search" type="search" placeholder="Escribe algo para buscar" onChange={this.handleChange} required />
 				          <label className="label-icon" htmlFor="search"><i className="material-icons">search</i></label>
 				        </div>
 				      </form>

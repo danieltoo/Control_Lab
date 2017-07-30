@@ -1,7 +1,10 @@
 import React, { Component } from 'react'
+
+
 import Card from './Cards/Card.js'
 
 export default class Dashboard extends Component{
+	
 	render() {
 		return(
 			<div className="row">

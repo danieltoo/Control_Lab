@@ -8,10 +8,10 @@ export default class Side extends Component {
 		<ul id="slide-out" className="side-nav fixed" style={{marginTop:64}}>
 			<li><a className="subheader center">{this.props.email}</a></li>
 			<li><div className="divider"></div></li>
-		    <li><NavLink to="/horarios"><i className="material-icons">assignment</i>Registrados</NavLink></li>
-		    <li><a href="#!"><i className="material-icons">date_range</i>Relación por semana</a></li>
+		    <li><NavLink to="/registros"><i className="material-icons">assignment</i>Registrados</NavLink></li>
+		    <li><a href="#!"><i className="material-icons">date_range</i>Relación por mes</a></li>
 		    <li><a href="#!"><i className="material-icons">account_circle</i>Asistencia docentes</a></li>
-		    <li><a href="#!"><i className="material-icons">query_builder</i>Horas por semana</a></li>
+		    <li><a href="#!"><i className="material-icons">query_builder</i>Horas por mes</a></li>
 		</ul>
 			)
 	}
